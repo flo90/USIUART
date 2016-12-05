@@ -10,6 +10,11 @@
 
 #include <stdint.h>
 
-uint8_t bitSwap(uint8_t byte);
+/**
+ * Reverse the Bits from a byte.
+ * @param byte Byte to reverse.
+ * @return Reversed Byte.
+ */
+uint8_t bitReverse(uint8_t byte);
 
 #endif /* SRC_BITSWAP_H_ */

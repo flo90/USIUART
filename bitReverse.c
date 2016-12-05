@@ -5,7 +5,7 @@
  *      Author: flo
  */
 
-#include "bitSwap.h"
+#include "bitReverse.h"
 
 #define USE_BITSWAP_TABLE 1
 
@@ -31,14 +31,14 @@ static const uint8_t BitReverseTable256[] PROGMEM =
   0x0F, 0x8F, 0x4F, 0xCF, 0x2F, 0xAF, 0x6F, 0xEF, 0x1F, 0x9F, 0x5F, 0xDF, 0x3F, 0xBF, 0x7F, 0xFF
 };
 
-uint8_t bitSwap( uint8_t x )
+uint8_t bitReverse( uint8_t x )
 {
     return pgm_read_byte(&BitReverseTable256[x]);
 }
 
 #else
 
-uint8_t bitSwap( uint8_t x )
+uint8_t bitReverse( uint8_t x )
 {
     x = ((x >> 1) & 0x55) | ((x << 1) & 0xaa);
     x = ((x >> 2) & 0x33) | ((x << 2) & 0xcc);

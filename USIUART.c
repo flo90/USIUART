@@ -14,7 +14,7 @@
 #include <avr/iotn85.h>
 #include <avr/interrupt.h>
 
-#include "bitSwap.h"
+#include "bitReverse.h"
 
 #define F_TIMER 1000000
 #define BAUD 9600
@@ -63,23 +63,22 @@ void usiuart_init()
 	OCR0A = (uint8_t) TIMER_TICK + TIMER_TICK/2;
 }
 
-uint8_t usiuart_getChar()
+bool usiuart_getChar(char *dst)
 {
 	uint8_t temp;
-	uint8_t data;
 
 	//Calculate next reader position
 	temp = (rxReader + 1) & (RXBUFFERSIZE-1);
 
 	//Return if no char available
-	if(temp == rxWriter) return 0;
+	if(temp == rxWriter) return false;
 
 	//Get data from buffer and bitswap
-	data = bitSwap(rxBuffer[temp]);
+	*dst = bitReverse(rxBuffer[temp]);
 
 	rxReader = temp;
 
-	return data;
+	return true;
 }
 
 
@@ -92,7 +91,7 @@ bool usiuart_printStr(char* string)
 	if(state != RX) return false;
 
 	//Disable PCINT0 interrupt
-	PCMSK = 0;
+	PCMSK &= ~_BV(PCINT0);
 
 	//Disable TIM Interrupt
 	TIMSK = 0;
@@ -105,7 +104,7 @@ bool usiuart_printStr(char* string)
 
 	currentChar = string;
 
-	tempTxChar = bitSwap(*currentChar++);
+	tempTxChar = bitReverse(*currentChar++);
 
 	//Prefill with data and startbit
 	USIDR = tempTxChar>>1;
@@ -177,7 +176,7 @@ ISR(USI_OVF_vect)
 		//Set rxWriter to next position
 		rxWriter = temp;
 
-		PCMSK = _BV(PCINT0);
+		PCMSK |= _BV(PCINT0);
 	}
 
 	/*
@@ -203,7 +202,7 @@ ISR(USI_OVF_vect)
 		if(*currentChar)
 		{
 			//Get next character
-			tempTxChar = bitSwap(*currentChar++);
+			tempTxChar = bitReverse(*currentChar++);
 
 			//Prefill with data and startbit
 			USIDR = tempTxChar>>1;
@@ -232,6 +231,6 @@ ISR(USI_OVF_vect)
 		GIFR |= _BV(PCIF);
 
 		//Reenable interrupt on PCINT0
-		PCMSK = _BV(PCINT0);
+		PCMSK |= _BV(PCINT0);
 	}
 }
