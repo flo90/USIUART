@@ -11,9 +11,24 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+/**
+ * Initialize the usi uart
+ */
 void usiuart_init(void);
-uint8_t usiuart_getChar(void);
 
+/**
+ * Gets next character
+ * @param dst Pointer to the destination
+ * @return False = No character, True = Next Character received
+ */
+bool usiuart_getChar(char *dst);
+
+/**
+ * Transmit a string.
+ * Interrupts every ongoing RX.
+ * @param string Null terminated string
+ * @return True = Success, False = currently Sending
+ */
 bool usiuart_printStr(char* string);
 
 #endif /* SRC_USIUART_H_ */
