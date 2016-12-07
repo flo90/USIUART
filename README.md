@@ -11,6 +11,6 @@ Note that trasmitting will interrupt receiving.
 The library occupies Timer0, PB0(RX) and PB1(TX).
 
 ## Test results
-The library was tested with an ATTiny85 driven with 8MHz by the internal oscillator.
+The library was tested on an ATTiny85 driven with 8MHz by the internal oscillator.
 Even uncalibrated -measured ~8.2MHz- characteres were received and transmitted correctly.
 Use a crystal to be safe.
