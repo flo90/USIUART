@@ -9,11 +9,17 @@ Note that trasmitting will interrupt receiving.
 
 ## Configuration
 The library is configurable by #define-directives. The following definitions are available:
+
 F_CPU               : CPU Frequency - Normally already defined by build enviornment.
+
 USE_BITSWAP_TABLE   : 0 -> Calculate, 1 -> Use table.
+
 TIMER_DIVIDER       : Sets divider of Timer0. 1, 8, 64, 256 and 1024 are available.
+
 BAUD                : Baudrate.
+
 RXBUFFERSIZE        : Receive buffer size. Only numbers like 2, 4, 8, 16, 32 ... are allowed.
+
 To easily update this lib from github without setting the configuration again, it's recommended to pass the definitions by the compiler flag -D.
 
 ## Possible errors
